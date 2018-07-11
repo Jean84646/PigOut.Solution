@@ -120,7 +120,7 @@ namespace PigOut.Tests
 
       //Act
       List<FavRestaurant> resultList = FavRestaurant.FindByName(testFavRestaurant.GetName());
-      
+
       //Assert
       CollectionAssert.AreEqual(testList, resultList);
     }
@@ -140,6 +140,21 @@ namespace PigOut.Tests
 
       //Assert
       Assert.AreEqual(secondDescription , result);
+    }
+    [TestMethod]
+    public void Delete_DeleteFavRestaurantEntry()
+    {
+      // Arrange
+      List<FavRestaurant> testList = new List<FavRestaurant> {};
+      FavRestaurant testFavRestaurant = new FavRestaurant("testName", "testCuisine", "testDescription", "testLocation");
+      testFavRestaurant.Save();
+
+      // Act
+      FavRestaurant.FindById(testFavRestaurant.GetId()).Delete();
+      List<FavRestaurant> resultList = FavRestaurant.GetAll();
+
+      // Assert
+      CollectionAssert.AreEqual(testList, resultList);
     }
   }
 }

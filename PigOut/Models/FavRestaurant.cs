@@ -235,6 +235,24 @@ namespace PigOut.Models
       }
     }
 
+    public void Delete()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM fav_restaurant WHERE id=@thisId;";
+      MySqlParameter deleteId = new MySqlParameter();
+      deleteId.ParameterName = "@thisId";
+      deleteId.Value = this.Id;
+      cmd.Parameters.Add(deleteId);
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
     public static void DeleteAll()
     {
       MySqlConnection conn = DB.Connection();

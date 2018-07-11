@@ -117,18 +117,52 @@ namespace PigOut.Models
       return allRestaurants;
     }
 
-    public static List<FavRestaurant> FindByCuisine(string cuisine)
+    public static FavRestaurant FindById(int byId)
     {
-      List<FavRestaurant> foundResaturants = new List<FavRestaurant> {};
+      int id = 0;
+      string name = "";
+      string description = "";
+      string location = "";
+      string cuisine = "";
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM fav_restaurant WHERE id = @idPara;";
+      MySqlParameter paraId = new MySqlParameter();
+      paraId.ParameterName = "@idPara";
+      paraId.Value = byId;
+      cmd.Parameters.Add(paraId);
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        id = rdr.GetInt32(0);
+        name = rdr.GetString(1);
+        description = rdr.GetString(2);
+        location = rdr.GetString(3);
+        cuisine = rdr.GetString(4);
+      }
+      FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, description, location, id);
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return newRestaurant;
+    }
+
+    public static List<FavRestaurant> FindByCuisine(string myCuisine)
+    {
+      List<FavRestaurant> foundRestaurants = new List<FavRestaurant> {};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"SELECT * FROM fav_restaurant WHERE cuisine_id = @Cuisine;";
       MySqlParameter searchCuisine = new MySqlParameter();
       searchCuisine.ParameterName = "@Cuisine";
-      searchCuisine.Value = cuisine;
+      searchCuisine.Value = myCuisine;
       cmd.Parameters.Add(searchCuisine);
-      MySqlDataReader rdr = cmd.ExecuteReader as MySqlDataReader;
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
         int id = rdr.GetInt32(0);
@@ -145,6 +179,60 @@ namespace PigOut.Models
         conn.Dispose();
       }
       return foundRestaurants;
+    }
+
+    public static List<FavRestaurant> FindByName(string byName)
+    {
+      List<FavRestaurant> foundRestaurants = new List<FavRestaurant> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM fav_restaurant WHERE name LIKE @Name;";
+      MySqlParameter searchName = new MySqlParameter();
+      searchName.ParameterName = "@Name";
+      searchName.Value = byName + '%';
+      cmd.Parameters.Add(searchName);
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        int id = rdr.GetInt32(0);
+        string name = rdr.GetString(1);
+        string description = rdr.GetString(2);
+        string location = rdr.GetString(3);
+        string cuisine = rdr.GetString(4);
+        FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, description, location, id);
+        foundRestaurants.Add(newRestaurant);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return foundRestaurants;
+    }
+
+    public void EditDescription(string newDescription)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE fav_restaurant SET description = @descriptionPara WHERE id = @idPara;";
+      MySqlParameter paraDescription = new MySqlParameter();
+      paraDescription.ParameterName = "@descriptionPara";
+      paraDescription.Value = newDescription;
+      cmd.Parameters.Add(paraDescription);
+      MySqlParameter paraId = new MySqlParameter();
+      paraId.ParameterName = "@idPara";
+      paraId.Value = this.Id;
+      cmd.Parameters.Add(paraId);
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
     }
 
     public static void DeleteAll()

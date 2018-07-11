@@ -81,5 +81,65 @@ namespace PigOut.Tests
     //Assert
     CollectionAssert.AreEqual(testList, result);
     }
+    [TestMethod]
+    public void Find_FindIdInDatabase_FavRestaurant()
+    {
+      //Arrange
+      FavRestaurant testFavRestaurant = new FavRestaurant("testName", "testCuisine", "testDescription", "testLocation");
+      testFavRestaurant.Save();
+
+      //Act
+      FavRestaurant resultRestaurant = FavRestaurant.FindById(testFavRestaurant.GetId());
+
+      //Assert
+      Assert.AreEqual(testFavRestaurant, resultRestaurant);
+    }
+    [TestMethod]
+    public void Find_FindCuisineInDatabase_FavRestaurant()
+    {
+      //Arrange
+      List<FavRestaurant> testList = new List<FavRestaurant> {};
+      FavRestaurant testFavRestaurant = new FavRestaurant("testName", "testCuisine", "testDescription", "testLocation");
+      testFavRestaurant.Save();
+      testList.Add(testFavRestaurant);
+
+      //Act
+      List<FavRestaurant> resultList = FavRestaurant.FindByCuisine(testFavRestaurant.GetCuisine());
+
+      //Assert
+      CollectionAssert.AreEqual(testList, resultList);
+    }
+    [TestMethod]
+    public void Find_FindNameInDatabase_FavRestaurant()
+    {
+      //Arrange
+      List<FavRestaurant> testList = new List<FavRestaurant> {};
+      FavRestaurant testFavRestaurant = new FavRestaurant("testName", "testCuisine", "testDescription", "testLocation");
+      testFavRestaurant.Save();
+      testList.Add(testFavRestaurant);
+
+      //Act
+      List<FavRestaurant> resultList = FavRestaurant.FindByName(testFavRestaurant.GetName());
+      
+      //Assert
+      CollectionAssert.AreEqual(testList, resultList);
+    }
+    [TestMethod]
+    public void Edit_UpdatesDescriptionInDatabase_String()
+    {
+      //Arrange
+      string firstDescription = "Food";
+      FavRestaurant testFavRestaurant = new FavRestaurant("testName", "testCuisine", firstDescription, "testLocation");
+      testFavRestaurant.Save();
+      string secondDescription = "Americana and Asian Fusion";
+
+      //Act
+      testFavRestaurant.EditDescription(secondDescription);
+
+      string result = FavRestaurant.FindById(testFavRestaurant.GetId()).GetDescription();
+
+      //Assert
+      Assert.AreEqual(secondDescription , result);
+    }
   }
 }

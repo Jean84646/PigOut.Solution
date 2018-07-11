@@ -1,0 +1,7 @@
+<h1>Favorite Restaurant List</h1>
+<ul>
+  @foreach(var restaurant in Model)
+  {
+    <li>@restaurant.GetName(), @restaurant.GetCuisine, @restaurant.GetDescription()</li>
+  }
+</ul>

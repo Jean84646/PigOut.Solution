@@ -41,5 +41,45 @@ namespace PigOut.Tests
       Assert.AreEqual(location, resultLocation);
       Assert.AreEqual(cuisine, resultCuisine);
     }
+    [TestMethod]
+    public void Equals_ReturnsTrueIfNameAndDescriptionsAreTheSame_FavRestaurant()
+    {
+      // Arrange, Act
+      FavRestaurant firstFavRestaurant = new FavRestaurant("testName", "testCuisine", "testDescription", "testLocation", 1);
+      FavRestaurant secondFavRestaurant = new FavRestaurant("testName", "testCuisine", "testDescription", "testLocation", 1);
+
+      // Assert
+      Assert.AreEqual(firstFavRestaurant, secondFavRestaurant);
+    }
+    [TestMethod]
+    public void Save_AssignsIdToObject_Id()
+    {
+    //Arrange
+    FavRestaurant testFavRestaurant = new FavRestaurant("testName", "testCuisine", "testDescription", "testLocation");
+
+    //Act
+    testFavRestaurant.Save();
+    FavRestaurant savedFavRestaurant = FavRestaurant.GetAll()[0];
+
+    int result = savedFavRestaurant.GetId();
+    int testId = testFavRestaurant.GetId();
+
+    //Assert
+    Assert.AreEqual(testId, result);
+    }
+    [TestMethod]
+    public void Save_SavesToDatabase_FavRestaurant()
+    {
+    //Arrange
+    FavRestaurant testFavRestaurant = new FavRestaurant("testName", "testCuisine", "testDescription", "testLocation");
+
+    //Act
+    testFavRestaurant.Save();
+    List<FavRestaurant> result = FavRestaurant.GetAll();
+    List<FavRestaurant> testList = new List<FavRestaurant>{testFavRestaurant};
+    Console.WriteLine(result[0].GetId());
+    //Assert
+    CollectionAssert.AreEqual(testList, result);
+    }
   }
 }

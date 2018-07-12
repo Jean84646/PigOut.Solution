@@ -13,7 +13,7 @@ namespace PigOut.Models
     private string Location;
     private string Cuisine;
 
-    public FavRestaurant(string newName, string newCuisine, string newDescription = "", string newLocation = "", int newId =0)
+    public FavRestaurant(string newName, string newCuisine, string newLocation = "", string newDescription = "", int newId =0)
     {
       Id = newId;
       Name = newName;
@@ -65,7 +65,7 @@ namespace PigOut.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO fav_restaurant (name, description, location, cuisine_id) VALUES (@inputName, @inputDescription, @inputLocation, @inputCuisine);";
+      cmd.CommandText = @"INSERT INTO fav_restaurant (name, cuisine_id, location, description) VALUES (@inputName, @inputCuisine, @inputLocation, @inputDescription);";
       MySqlParameter newName = new MySqlParameter();
       newName.ParameterName = "@inputName";
       newName.Value = this.Name;
@@ -106,7 +106,7 @@ namespace PigOut.Models
         string description = rdr.GetString(2);
         string location = rdr.GetString(3);
         string cuisine = rdr.GetString(4);
-        FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, description, location, id);
+        FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, location, description, id);
         allRestaurants.Add(newRestaurant);
       }
       conn.Close();
@@ -141,7 +141,7 @@ namespace PigOut.Models
         location = rdr.GetString(3);
         cuisine = rdr.GetString(4);
       }
-      FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, description, location, id);
+      FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, location, description, id);
 
       conn.Close();
       if (conn != null)
@@ -170,7 +170,7 @@ namespace PigOut.Models
         string description = rdr.GetString(2);
         string location = rdr.GetString(3);
         string cuisine = rdr.GetString(4);
-        FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, description, location, id);
+        FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, location, description, id);
         foundRestaurants.Add(newRestaurant);
       }
       conn.Close();
@@ -200,7 +200,7 @@ namespace PigOut.Models
         string description = rdr.GetString(2);
         string location = rdr.GetString(3);
         string cuisine = rdr.GetString(4);
-        FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, description, location, id);
+        FavRestaurant newRestaurant = new FavRestaurant(name, cuisine, location, description, id);
         foundRestaurants.Add(newRestaurant);
       }
       conn.Close();

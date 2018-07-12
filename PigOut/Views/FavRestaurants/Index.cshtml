@@ -2,6 +2,15 @@
 <ul>
   @foreach(var restaurant in Model)
   {
-    <li>@restaurant.GetName(), @restaurant.GetCuisine, @restaurant.GetDescription()</li>
+    <form action="/favrestaurants/delete" method="post">
+    <li>@restaurant.GetCuisine() - @restaurant.GetName(): @restaurant.GetLocation(), Description: @restaurant.GetDescription()
+      <a href= "/favrestaurants/@restaurant.GetId()">Edit</a>
+      <input type="number" name="deleteId" value="@restaurant.GetId()" hidden>
+      <button type="submit" name="button">Delete</button></li></form>
   }
 </ul>
+
+<h3><a href="/">Home</a></h3>
+<h3><a href="/favrestaurants">List of Restaurants</a></h3>
+<h3><a href="/cuisine">List of Cuisine</a></h3>
+<h3><a href="/favrestaurants/new">Add new restaurant</a></h3>

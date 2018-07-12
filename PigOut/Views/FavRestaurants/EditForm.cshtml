@@ -1,0 +1,18 @@
+<h1>Edit Form</h1>
+
+<p>Restaurant Name: @Model.GetName()</p>
+<p>Restaurant Description: @Model.GetDescription()</p>
+<p>Restaurant Location: @Model.GetLocation()</p>
+<p>Restaurant Cuisine Type: @Model.GetCuisine()</p>
+
+<form class="" action="/favrestaurants/edit" method="post">
+  <label for="editDescription">Edit Description</label>
+  <input type="text" name="editDescription" required>
+  <input type="text" name="editId" value="@Model.GetId()" hidden>
+  <button type="submit" name="button">Edit</button>
+</form>
+
+<h3><a href="/">Home</a></h3>
+<h3><a href="/favrestaurants">List of Restaurants</a></h3>
+<h3><a href="/cuisine">List of Cuisine</a></h3>
+<h3><a href="/favrestaurants/new">Add new restaurant</a></h3>

@@ -67,11 +67,18 @@ namespace PigOut.Controllers
       return View();
     }
     [HttpPost("/favrestaurants/search")]
-    public ActionResult SearchRestaurant(string nameofRestaurant)
+    public ActionResult Search(string searchFx, string searchTerm)
     {
-      List<FavRestaurant> foundRestaurants = FavRestaurant.FindByName(nameofRestaurant);
+      List<FavRestaurant> foundRestaurants = new List<FavRestaurant> {};
+      if(searchFx.Equals("byName"))
+      {
+        foundRestaurants = FavRestaurant.FindByName(searchTerm);
+      }
+      else
+      {
+        foundRestaurants = FavRestaurant.FindByCuisine(searchTerm);
+      }
       return View("Index", foundRestaurants);
     }
-
   }
 }

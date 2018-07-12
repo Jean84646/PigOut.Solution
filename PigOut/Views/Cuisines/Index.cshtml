@@ -1,0 +1,11 @@
+<h1>Cuisines List</h1>
+<ul>
+  @foreach (var cuisine in Model)
+  {
+    <li>Cuisine: <a href="/favrestaurants/cuisines/@cuisine.GetCuisine()">@cuisine.GetCuisine()</a>: @cuisine.GetDescription() ajajaja</li>
+  }
+</ul>
+<h3><a href="/">Home</a></h3>
+<h3><a href="/favrestaurants">List of Restaurants</a></h3>
+<h3><a href="/favrestaurants/new">Add new restaurant</a></h3>
+<h3><a href="/cuisines/new">Add Cuisine</a></h3>

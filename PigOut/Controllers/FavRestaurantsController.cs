@@ -55,5 +55,23 @@ namespace PigOut.Controllers
       FavRestaurant.FindById(id).EditDescription(editDescription);
       return RedirectToAction("Index");
     }
+    [HttpGet("/favrestaurants/cuisines/{cuisine}")]
+    public ActionResult FindByCuisine(string cuisine)
+    {
+      List<FavRestaurant> matchCuisines = FavRestaurant.FindByCuisine(cuisine);
+      return View("Index", matchCuisines);
+    }
+    [HttpGet("/favrestaurants/search")]
+    public ActionResult SearchForm()
+    {
+      return View();
+    }
+    [HttpPost("/favrestaurants/search")]
+    public ActionResult SearchRestaurant(string nameofRestaurant)
+    {
+      List<FavRestaurant> foundRestaurants = FavRestaurant.FindByName(nameofRestaurant);
+      return View("Index", foundRestaurants);
+    }
+
   }
 }
